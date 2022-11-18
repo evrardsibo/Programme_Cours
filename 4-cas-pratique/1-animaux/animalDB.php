@@ -2,40 +2,37 @@
     require_once './database.php';
     class AnimalDbo
     {
-        private static $pdo;
-        private static $id;
-
-        public static function animaux()
+        public static function getAnimalBD()
         {
-            self::$pdo = DataBase::dbConnect();
-            $req = 'SELECT * FROM animaux';
-            $stmt = self::$pdo->prepare($req);
+            $pdo = DataBase::dbConnect();
+            $req = "SELECT * FROM animaux;";
+            $stmt = $pdo->prepare($req);
             $stmt->execute();
             $animaux = $stmt->fetchAll();
             return $animaux;
         }
 
-        public static function image()
+        public static function getImage($idAnimal)
         {
-            self::$pdo = DataBase::dbConnect();
-            $req = 'SELECT * FROM image';
-            $stmt = self::$pdo->prepare($req);
+            $pdo = DataBase::dbConnect();
+            $req = 'SELECT libelle, url FROM image i INNER JOIN image_animal ia ON i.idImage = ia.idImage WHERE ia.idAnimal = :idAnimal';
+            $stmt = $pdo->prepare($req);
+            $stmt->bindValue(':idAnimal', $idAnimal, PDO::PARAM_INT);
             $stmt->execute();
-            $image = $stmt->fetchAll();
-            return $image;
+            $res = $stmt->fetchAll();
+            return $res;
 
         }
 
-        public static function imageAnimal($id)
+        public static function getTypeAnimal($idAnimal)
         {
-            self::$id = $id;
-            self::$pdo = DataBase::dbConnect();
-            $req = 'SELECT * FROM image_animal WHERE idAnimal = :idImage';
-            $stmt = self::$pdo->prepare($req);
-            $stmt->bindValue(':idImage', $id);
+            $pdo = DataBase::dbConnect();
+            $req = 'SELECT libelle FROM type t INNER JOIN animaux a ON t.idType = a.idType WHERE a.idAnimal = :idAnimal';
+            $stmt = $pdo->prepare($req);
+            $stmt->bindValue(':idAnimal', $idAnimal, PDO::PARAM_INT);
             $stmt->execute();
-            $image_animal = $stmt->fetch();
-            return $image_animal;
+            $res = $stmt->fetch();
+            return $res['libelle'];
         }
 
     }

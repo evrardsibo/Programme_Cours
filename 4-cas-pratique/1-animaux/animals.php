@@ -1,6 +1,5 @@
 <?php 
-
-    class Animal{
+        class Animal{
         private $id;
         private  $nom;
         private  $age;
@@ -38,14 +37,4 @@
 
         public function getImage(){ return $this->image;}
         public function setImage($image){ $this->nom = $image;}
-
-        // public function __toString()
-        // {
-        //     $animal = $this->nom;
-        //     $animal = $this->age;
-        //     $animal = $this->sexe;
-        //     $animal = $this->type;
-        //     $animal = $this->image;
-        //     return $animal;
-        // }
     }
